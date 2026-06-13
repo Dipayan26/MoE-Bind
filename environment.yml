@@ -1,4 +1,4 @@
-name: moebind3
+name: moebind
 channels:
   - conda-forge
   - defaults
