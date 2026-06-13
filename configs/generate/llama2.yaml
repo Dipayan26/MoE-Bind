@@ -1,0 +1,44 @@
+# Filtered binder generation (GQA / LLaMA2). Tune the generation and filtering
+# blocks below to control sampling and candidate selection.
+
+active_model: llama2_demo
+
+data:
+  benchmark_csv: data/demo/demo_benchmark.csv
+  target_col: receptor_seq
+  length_ref_col: ligand_seq
+
+generation:
+  temperature: 0.75
+  top_k: null
+  top_p: 0.85
+  repetition_penalty: 1.5
+  num_samples: 10
+
+filtering:
+  max_run_len: 8
+  repetitiveness_top_pct: 0.20
+  ppl_top_pct: 0.30
+  min_survivors: 1
+
+output:
+  dir: outputs/generated/llama2
+
+models:
+  llama2_demo:
+    run_type: Full_finetune_LLAMA2
+    checkpoint: checkpoints/demo/llama2_finetune/demo_llama2_finetune.pt
+    arch:
+      vocab_size: 31
+      block_size: 256
+      n_layer: 2
+      n_head: 4
+      n_embd: 128
+      n_kv_heads: 2
+      multiple_of: 32
+      ffn_dim_multiplier: null
+      norm_eps: 0.00001
+      dropout: 0.1
+
+# Run:
+# python -m scripts.generate_batch --config configs/generate/llama2.yaml

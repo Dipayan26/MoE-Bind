@@ -1,0 +1,39 @@
+run:
+  type: Full_finetune_GPT2
+  pretrained_ckpt: checkpoints/gpt2_100M/pretrain/pretrain_gpt2_100M.pt
+  mod_pretrained_with_MTP: false
+
+model:
+  vocab_size: 31
+  block_size: 768
+  n_layer: 14
+  n_head: 12
+  n_embd: 768
+  dropout: 0.1
+  bias: true
+
+data:
+  name: ppi_finetune
+  dtype: uint16
+  preprocessed_train: data/finetune/tokenized/train
+  preprocessed_val: data/finetune/tokenized/val
+
+training:
+  learning_rate: 0.000005
+  min_lr: 0.0000005
+  max_iters: 125000
+  warmup_steps: 500
+  eval_iters: 800
+  batch_size: 4
+  gradient_accumulation_steps: 16
+  checkpoint_dir: checkpoints/gpt2_100M/finetune
+  out_mod_name: "finetune_gpt2_100M"
+  conditional_masking: true
+
+logging:
+  project: moebind_finetune_100M
+  seed: 42
+  id: gpt2_finetune_100M
+
+# Run:
+# python -m scripts.train --config configs/finetune/gpt2_100M.yaml

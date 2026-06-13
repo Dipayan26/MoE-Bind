@@ -1,0 +1,28 @@
+# Config for scripts/preprocess_finetune.py — tokenizes the raw PPI CSV into Arrow datasets for fast fine-tuning.
+
+
+data:
+  csv_path: ../../data/demo/demo_finetune.csv
+  max_samples: null            # null = use all rows
+
+filter:
+  min_total_len: 30            # skip pairs with combined length < this
+  max_total_len: 256           # skip pairs with combined length >= this (must match block_size)
+
+tokenization:
+  block_size: 256
+  # Baked into the labels at preprocessing time:
+  #   true  = labels only on Protein B (binder generation task)
+  #   false = labels on the full sequence
+  conditional_masking: true
+
+split:
+  test_size: 0.1
+  seed: 42
+
+output:
+  train: ../../data/demo/tokenized_ft/demo_ft_train
+  val:   ../../data/demo/tokenized_ft/demo_ft_val
+
+# Run:
+# python -m scripts.preprocess_finetune --config configs/finetune_preprocess/demo_finetune_preprocess.yaml

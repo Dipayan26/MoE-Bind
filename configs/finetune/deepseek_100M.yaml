@@ -1,0 +1,53 @@
+run:
+  type: Full_finetune_MOE_bind
+  pretrained_ckpt: checkpoints/deepseek_100M/pretrain/pretrain_deepseek_100M.pt
+  mod_pretrained_with_MTP: true   
+model:
+  vocab_size: 31
+  block_size: 768
+  n_layer: 12
+  n_head: 8
+  n_embd: 512
+
+  kv_lora_rank: 64
+  q_lora_rank: 64
+  rope_dim: 32
+  bias: true
+
+  mtp_num_heads: 0              
+  dropout: 0.1
+
+  n_experts: 8
+  n_experts_per_token: 2
+  expert_intermediate_size: 576
+  shared_expert_intermediate_size: 576
+  use_shared_expert: true
+
+  mtp_loss_weight: 0.0
+  aux_loss_weight: 0.1
+
+data:
+  name: ppi_finetune
+  dtype: uint16
+  preprocessed_train: data/finetune/tokenized/train
+  preprocessed_val: data/finetune/tokenized/val
+
+training:
+  learning_rate: 0.000005
+  min_lr: 0.0000005
+  max_iters: 125000
+  warmup_steps: 500
+  eval_iters: 400
+  batch_size: 4
+  gradient_accumulation_steps: 16
+  checkpoint_dir: checkpoints/deepseek_100M/finetune
+  out_mod_name: "finetune_deepseek_100M"
+  conditional_masking: true
+
+logging:
+  project: moebind_finetune_100M
+  seed: 42
+  id: deepseek_finetune_100M
+
+# Run:
+# python -m scripts.train --config configs/finetune/deepseek_100M.yaml

@@ -1,0 +1,41 @@
+# Filtered binder generation (MHA ). Tune the generation and filtering
+# blocks below to control sampling and candidate selection.
+
+active_model: gpt2_demo
+
+data:
+  benchmark_csv: data/demo/demo_benchmark.csv
+  target_col: receptor_seq        # column used as the receptor prompt
+  length_ref_col: ligand_seq      # column whose length the binder is matched to
+
+generation:
+  temperature: 0.75
+  top_k: null
+  top_p: 0.85
+  repetition_penalty: 1.5
+  num_samples: 10                 # candidates per target before filtering
+
+filtering:
+  max_run_len: 8                  # discard sequences with a homopolymer run > 8
+  repetitiveness_top_pct: 0.20    # drop top 20% most repetitive survivors
+  ppl_top_pct: 0.30               # drop top 30% highest-PPL survivors
+  min_survivors: 1                # always keep at least one candidate
+
+output:
+  dir: outputs/generated/gpt2
+
+models:
+  gpt2_demo:
+    run_type: Full_finetune_GPT2
+    checkpoint: checkpoints/demo/gpt2_finetune/demo_gpt2_finetune.pt
+    arch:
+      vocab_size: 31
+      block_size: 256
+      n_layer: 2
+      n_head: 4
+      n_embd: 128
+      dropout: 0.1
+      bias: true
+
+# Run:
+# python -m scripts.generate_batch --config configs/generate/gpt2.yaml

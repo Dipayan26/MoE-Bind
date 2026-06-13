@@ -1,0 +1,26 @@
+# Config for scripts/preprocess_finetune.py — full PPI fine-tuning corpus.
+# NOTE: paths here are resolved relative to THIS file's directory.
+
+data:
+  # CSV with columns: sequence1 (receptor), sequence2 (binder)
+  csv_path: ../../data/finetune/ppi_pairs.csv
+  max_samples: null
+
+filter:
+  min_total_len: 30
+  max_total_len: 768            # must match block_size
+
+tokenization:
+  block_size: 768
+  conditional_masking: true     # true = train only on Protein B (binder) tokens
+
+split:
+  test_size: 0.05
+  seed: 42
+
+output:
+  train: ../../data/finetune/tokenized/train
+  val:   ../../data/finetune/tokenized/val
+
+# Run:
+# python -m scripts.preprocess_finetune --config configs/finetune_preprocess/finetune_preprocess.yaml

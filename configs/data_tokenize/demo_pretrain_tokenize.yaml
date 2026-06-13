@@ -1,0 +1,21 @@
+run:
+  type: Fasta_tokenize_protein
+
+data:
+  fasta_path: data/demo/demo_pretrain.fasta
+
+tokenizer:
+  max_seq_len: 256
+  dtype: uint16
+  train_ratio: 0.9
+  total_tokens: 200_000
+  batch_size: 256
+  write_block: 50_000
+  random_seed: 42
+
+output:
+  train_bin: data/demo/tokenized/demo_train.bin
+  val_bin: data/demo/tokenized/demo_val.bin
+
+# Run:
+# python -m scripts.data_tokenize --config configs/data_tokenize/demo_pretrain_tokenize.yaml

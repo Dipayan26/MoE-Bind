@@ -1,0 +1,41 @@
+run:
+  type: pretrain_llama2
+
+model:
+  # GQA (LLaMA2 style) — demo dimensions
+  vocab_size: 31
+  block_size: 256
+  n_layer: 2
+  n_head: 4
+  n_embd: 128
+  n_kv_heads: 2              # GQA: 2 KV heads (n_rep = 4/2 = 2)
+  multiple_of: 32
+  ffn_dim_multiplier: null
+  norm_eps: 0.00001
+  dropout: 0.1
+
+data:
+  name: demo_pretrain
+  train_bin: data/demo/tokenized/demo_train.bin
+  val_bin: data/demo/tokenized/demo_val.bin
+  dtype: uint16
+
+training:
+  learning_rate: 0.0003
+  min_lr: 0.00003
+  max_iters: 50
+  warmup_steps: 5
+  eval_iters: 25
+  batch_size: 8
+  gradient_accumulation_steps: 1
+  checkpoint_dir: checkpoints/demo/llama2_pretrain
+  conditional_masking: false
+  out_mod_name: "demo_llama2_pretrain"
+
+logging:
+  project: moebind_demo
+  seed: 42
+  id: demo_llama2_pretrain
+
+# Run:
+# python -m scripts.train --config configs/pretrain/demo/llama2.yaml

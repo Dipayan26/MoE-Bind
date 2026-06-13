@@ -1,0 +1,53 @@
+# Filtered binder generation (MLA-MoE). Tune the generation and
+# filtering blocks below to control sampling and candidate selection.
+
+active_model: deepseek_demo
+
+data:
+  benchmark_csv: data/demo/demo_benchmark.csv
+  target_col: receptor_seq
+  length_ref_col: ligand_seq
+
+generation:
+  temperature: 0.75
+  top_k: null
+  top_p: 0.85
+  repetition_penalty: 1.5
+  num_samples: 10
+
+filtering:
+  max_run_len: 8
+  repetitiveness_top_pct: 0.20
+  ppl_top_pct: 0.30
+  min_survivors: 1
+
+output:
+  dir: outputs/generated/deepseek
+
+models:
+  deepseek_demo:
+    run_type: Full_finetune_MOE_bind
+    checkpoint: checkpoints/demo/deepseek_finetune/demo_deepseek_finetune.pt
+    arch:
+      vocab_size: 31
+      block_size: 256
+      n_layer: 2
+      n_head: 4
+      n_embd: 128
+      kv_lora_rank: 32
+      q_lora_rank: 32
+      rope_dim: 16
+      bias: true
+      mtp_num_heads: 0
+      dropout: 0.1
+      n_experts: 4
+      n_experts_per_token: 2
+      expert_intermediate_size: 128
+      shared_expert_intermediate_size: 128
+      use_shared_expert: true
+      MOE_route_out: false
+      mtp_loss_weight: 0.0
+      aux_loss_weight: 0.1
+
+# Run:
+# python -m scripts.generate_batch --config configs/generate/deepseek.yaml

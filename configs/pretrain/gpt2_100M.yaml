@@ -1,0 +1,38 @@
+run:
+  type: pretrain_gpt2
+
+model:
+  vocab_size: 31
+  block_size: 768
+  n_layer: 14
+  n_head: 12
+  n_embd: 768
+  dropout: 0.1
+  bias: true
+
+data:
+  name: pretrain_corpus
+  train_bin: data/pretrain/tokenized/train.bin
+  val_bin: data/pretrain/tokenized/val.bin
+  dtype: uint16
+
+training:
+  learning_rate: 0.0001
+  min_lr: 0.00001
+  # 200M token budget (10% of a 2B-token corpus): 200M / (batch × block)
+  max_iters: 9300
+  warmup_steps: 186
+  eval_iters: 900
+  batch_size: 28
+  gradient_accumulation_steps: 18
+  checkpoint_dir: checkpoints/gpt2_100M/pretrain
+  conditional_masking: false
+  out_mod_name: "pretrain_gpt2_100M"
+
+logging:
+  project: moebind_pretrain_100M
+  seed: 42
+  id: gpt2_pretrain_100M
+
+# Run:
+# python -m scripts.train --config configs/pretrain/gpt2_100M.yaml

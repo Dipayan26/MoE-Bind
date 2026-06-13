@@ -1,0 +1,57 @@
+run:
+  type: pretrain_MOE_bind
+
+model:
+  # MLA + MoE (DeepSeekV3 style)
+  vocab_size: 31
+  block_size: 768
+  n_layer: 12
+  n_head: 8
+  n_embd: 512
+
+  # MLA (low-rank KV/Q compression)
+  kv_lora_rank: 64
+  q_lora_rank: 64
+  rope_dim: 32
+  bias: true
+
+  # Multi-Token Prediction — enabled for pre-training (heads discarded at fine-tune)
+  mtp_num_heads: 2
+  dropout: 0.1
+
+  # Mixture of Experts (top-2 of 8 + shared expert)
+  n_experts: 8
+  n_experts_per_token: 2
+  expert_intermediate_size: 576
+  shared_expert_intermediate_size: 576
+  use_shared_expert: true
+
+  MOE_route_out: false         # must be false during training
+  mtp_loss_weight: 0.3
+  aux_loss_weight: 0.1
+
+data:
+  name: pretrain_corpus
+  train_bin: data/pretrain/tokenized/train.bin
+  val_bin: data/pretrain/tokenized/val.bin
+  dtype: uint16
+
+training:
+  learning_rate: 0.0001
+  min_lr: 0.00001
+  max_iters: 32552
+  warmup_steps: 650
+  eval_iters: 3200
+  batch_size: 8
+  gradient_accumulation_steps: 64
+  checkpoint_dir: checkpoints/deepseek_100M/pretrain
+  out_mod_name: "pretrain_deepseek_100M"
+  conditional_masking: false
+
+logging:
+  project: moebind_pretrain_100M
+  seed: 42
+  id: deepseek_pretrain_100M
+
+# Run:
+# python -m scripts.train --config configs/pretrain/deepseek_100M.yaml

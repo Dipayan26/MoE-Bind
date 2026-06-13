@@ -1,0 +1,40 @@
+run:
+  type: pretrain_llama2
+
+model:
+  vocab_size: 31
+  block_size: 768
+  n_layer: 16                  # 16 layers compensate for GQA attention param reduction
+  n_head: 12
+  n_embd: 768
+  n_kv_heads: 4                # GQA: 4 KV heads (n_rep = 12/4 = 3)
+  multiple_of: 1024
+  ffn_dim_multiplier: null
+  norm_eps: 0.00001
+  dropout: 0.1
+
+data:
+  name: pretrain_corpus
+  train_bin: data/pretrain/tokenized/train.bin
+  val_bin: data/pretrain/tokenized/val.bin
+  dtype: uint16
+
+training:
+  learning_rate: 0.0001
+  min_lr: 0.00001
+  max_iters: 43402
+  warmup_steps: 868
+  eval_iters: 4250
+  batch_size: 6
+  gradient_accumulation_steps: 85
+  checkpoint_dir: checkpoints/llama2_100M/pretrain
+  conditional_masking: false
+  out_mod_name: "pretrain_llama2_100M"
+
+logging:
+  project: moebind_pretrain_100M
+  seed: 42
+  id: llama2_pretrain_100M
+
+# Run:
+# python -m scripts.train --config configs/pretrain/llama2_100M.yaml

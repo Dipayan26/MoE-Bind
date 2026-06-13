@@ -1,0 +1,38 @@
+run:
+  type: pretrain_gpt2
+
+model:
+  # MHA (dense GPT-2 style) — demo dimensions
+  vocab_size: 31
+  block_size: 256
+  n_layer: 2
+  n_head: 4
+  n_embd: 128
+  dropout: 0.1
+  bias: true
+
+data:
+  name: demo_pretrain
+  train_bin: data/demo/tokenized/demo_train.bin
+  val_bin: data/demo/tokenized/demo_val.bin
+  dtype: uint16
+
+training:
+  learning_rate: 0.0003
+  min_lr: 0.00003
+  max_iters: 50
+  warmup_steps: 5
+  eval_iters: 25
+  batch_size: 8
+  gradient_accumulation_steps: 1
+  checkpoint_dir: checkpoints/demo/gpt2_pretrain
+  conditional_masking: false
+  out_mod_name: "demo_gpt2_pretrain"
+
+logging:
+  project: moebind_demo
+  seed: 42
+  id: demo_gpt2_pretrain
+
+# Run:
+# python -m scripts.train --config configs/pretrain/demo/gpt2.yaml
