@@ -110,5 +110,20 @@ Approximate sizes: GPT2-100M ≈ 99.85M, LLaMA2-100M ≈ 100.7M, DeepSeek-100M �
 ## License
 
 MIT — see [LICENSE](LICENSE).
-<!-- 
-## Citation -->
+
+## Citation
+
+If you find this work useful, please cite:
+
+```bibtex
+@article{Sarkar2026MoEBind,
+  author       = {Dipayan Sarkar and Chiranjib Sarkar},
+  title        = {MoE-Bind: Guiding De Novo Protein Binder Generation with Sparse Experts},
+  journal      = {bioRxiv},
+  year         = {2026},
+  doi          = {10.64898/2026.06.13.732043},
+  url          = {https://www.biorxiv.org/content/early/2026/06/13/2026.06.13.732043}
+}
+```
+
+Preprint: https://doi.org/10.64898/2026.06.13.732043
