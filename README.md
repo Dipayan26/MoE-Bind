@@ -20,7 +20,7 @@ specialization at both the individual amino acid and biochemical group level,
 a structured expert-token alignment not previously reported for
 natural-language MoE models. These results show that sparse architectural design, rather than scale, can deliver fast, structure-free, and interpretable protein binder generation.
 
-## 🎓 Research Overview
+## Research Overview
 
 [Watch on YouTube](https://www.youtube.com/watch?v=UgKDtqwGvag)
 
