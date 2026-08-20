@@ -1,0 +1,43 @@
+[project]
+name = "moe-bind"
+version = "0.1.0"
+description = "Sparse Mixture-of-Experts autoregressive model for de novo protein binder generation"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.2,<2.5",
+    "pandas>=3.0.3",
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "transformers>=5.14.1",
+    "accelerate>=1.14.0",
+    "peft>=0.19.1",
+    "datasets>=5.0.0",
+    "tokenizers>=0.22.2",
+    "huggingface-hub>=1.24.0",
+    "safetensors>=0.8.0",
+    "sentencepiece>=0.2.2",
+    "wandb>=0.28.1",
+    "scipy>=1.18.0",
+    "scikit-learn>=1.9.0",
+    "matplotlib>=3.11.1",
+    "seaborn>=0.13.2",
+    "biopython>=1.87",
+    "pyarrow>=23.0.1",
+    "pydantic>=2.12.5",
+    "pyyaml>=6.0.3",
+    "tqdm>=4.69.0",
+    "umap-learn>=0.5.12",
+    "tiktoken>=0.13.0",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }
+torchaudio = { index = "pytorch-cu126" }
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
